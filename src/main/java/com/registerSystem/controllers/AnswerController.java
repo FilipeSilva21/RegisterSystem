@@ -20,9 +20,11 @@ public class AnswerController {
     @Autowired
     private AnswerService answerService;
 
-    @PostMapping
-    public ResponseEntity<Void> createAnswer(@PathVariable("questionId") Long questionId, @RequestBody CreateAnswerDTO createAnswerDTO) {
-        Long answerId = answerService.createAnswer(createAnswerDTO);
+    @PostMapping("/{questionId}")
+    public ResponseEntity<Void> createAnswer(@PathVariable Question questionId,
+                                             @RequestBody CreateAnswerDTO createAnswerDTO) {
+
+        var answerId = answerService.createAnswer(createAnswerDTO, questionId);
 
         return ResponseEntity.created(URI.create("/v1/answers/" + answerId)).build();
     }

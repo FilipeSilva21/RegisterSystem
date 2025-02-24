@@ -1,5 +1,6 @@
 package com.registerSystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,8 @@ public class Answer {
 
     @OneToOne
     @JoinColumn(name = "questionId")
-    private Question questionId;
+    @JsonIgnoreProperties("questions")
+    private Question question;
 
     @Column (name = "answer")
     private String answer;
