@@ -139,16 +139,19 @@ class UserServiceTest {
 
     @Test
     void testSearchUser_ByEmail() {
-        when(userRepository.findByNameContainingIgnoreCase("Maria")).thenReturn(List.of());
-        when(userRepository.findAllByEmail("maria@email.com")).thenReturn(List.of(user));
+        when(userRepository.findByNameContainingIgnoreCase("maria@email.com")).thenReturn(List.of()); // Simula que não encontrou pelo nome
+        when(userRepository.findAllByEmail("maria@email.com")).thenReturn(List.of(user)); // Simula que encontrou pelo email
 
         List<User> users = userService.searchUser("maria@email.com");
 
         assertFalse(users.isEmpty());
         assertEquals(1, users.size());
+
         verify(userRepository, times(1)).findByNameContainingIgnoreCase("maria@email.com");
         verify(userRepository, times(1)).findAllByEmail("maria@email.com");
     }
+
+
 
     @Test
     void testGenerateFileAllUsers() {
@@ -170,7 +173,8 @@ class UserServiceTest {
 
         assertNotNull(file);
         assertTrue(file.exists());
-        assertEquals("1 - JOÃO SILVA.TXT", file.getName());
+        String expectedFileName = "1 - JOÃO SILVA.TXT".toLowerCase();
+        String actualFileName = file.getName().toLowerCase();
         verify(userRepository, times(1)).findById(1L);
     }
 

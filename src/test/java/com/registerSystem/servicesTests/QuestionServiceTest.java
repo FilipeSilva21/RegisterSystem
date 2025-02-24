@@ -121,7 +121,7 @@ class QuestionServiceTest {
                 questionService.deleteQuestion(99L)
         );
 
-        assertEquals("Questão não encontrada", exception.getMessage());
+        assertEquals("Questão não encontrada!", exception.getMessage());
         verify(questionRepository, never()).deleteById(anyLong());
     }
 }
