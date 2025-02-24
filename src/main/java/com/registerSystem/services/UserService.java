@@ -29,8 +29,8 @@ public class UserService {
                 createUserDTO.height()
         );
 
-        if(createUserDTO.name().length() < 10){
-            throw new IllegalArgumentException("Nome do usuario deve ter no minimo 10 caracteres");
+        if(createUserDTO.name().length() < 5){
+            throw new IllegalArgumentException("Nome do usuario deve ter no minimo 5 caracteres");
         }
 
         if(userRepository.findByEmail(createUserDTO.email()).isPresent()){

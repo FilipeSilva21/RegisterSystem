@@ -19,10 +19,10 @@ public class Answer {
     @Column(name = "answerId")
     private Long answerId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "questionId")
-    private Question question;
+    private Question questionId;
 
     @Column (name = "answer")
-    private int answer;
+    private String answer;
 }

@@ -1,6 +1,11 @@
 package com.registerSystem.services;
 
+import com.registerSystem.DTOs.CreateAnswerDTO;
+import com.registerSystem.models.Answer;
+import com.registerSystem.models.Question;
 import com.registerSystem.models.User;
+import com.registerSystem.repositories.AnswerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AnswerService {
@@ -16,46 +22,35 @@ public class AnswerService {
     private final String BASE_URL = "http://localhost:8080/v1";
 
     @Autowired
-    private QuestionService questionService;
+    private AnswerRepository answerRepository;
 
-    @Autowired
-    private UserService userService;
+   public Long createAnswer(CreateAnswerDTO createAnswerDTO){
+       var answer = new Answer(
+               null,
+               createAnswerDTO.questionId(),
+               createAnswerDTO.answer()
+       );
 
-    @Autowired
-    private RestTemplate restTemplate;
+       var answerSaved = answerRepository.save(answer);
 
-    public ResponseEntity<String> createUser(String user) {
-        String url = BASE_URL + "/users";
-        return restTemplate.postForEntity(url, user, String.class);
+       return answerSaved.getAnswerId();
+   }
+
+   public List<Answer> getAllAnswers() {
+
+       return answerRepository.findAll();
+   }
+
+    public Optional<Answer> getAnswerById (Long answerId){
+
+        return answerRepository.findById(answerId);
     }
 
-    public ResponseEntity<String> getUsers() {
-        String url = BASE_URL + "/users";
-        return restTemplate.getForEntity(url, String.class);
-    }
+    public void deleteAnswer(Long answerId) {
 
-    public ResponseEntity<String> createQuestion(String question) {
-        String url = BASE_URL + "/questions";
-        return restTemplate.postForEntity(url, question, String.class);
-    }
+        Optional<Answer> answer = answerRepository.findById(answerId);
 
-    public ResponseEntity<String> getQuestions() {
-        String url = BASE_URL + "/questions";
-        return restTemplate.getForEntity(url, String.class);
-    }
-
-    public ResponseEntity<Void> deleteQuestion(Long questionId) {
-        String url = BASE_URL + "/questions/delete/" + questionId;
-        restTemplate.delete(url);
-        return ResponseEntity.ok().build();
-    }
-
-    public List<User> searchUser(String search) {
-        String url = BASE_URL + "/users/search/" + search;
-
-        User[] users = restTemplate.getForObject(url, User[].class);
-
-        return users != null ? Arrays.asList(users) : List.of();
+        answerRepository.deleteById(answerId);
     }
 
 }

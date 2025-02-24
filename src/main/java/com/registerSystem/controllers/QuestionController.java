@@ -18,14 +18,14 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @PostMapping("/questions")
+    @PostMapping
     public ResponseEntity<Void> createQuestion(@RequestBody CreateQuestionDTO createQuestionDTO) {
         Long questionId = questionService.createQuestion(createQuestionDTO);
 
         return ResponseEntity.created(URI.create("/v1/questions/" + questionId)).build();
     }
 
-    @GetMapping("/questions")
+    @GetMapping
     public ResponseEntity<List<Question>> listQuestions() {
 
         return ResponseEntity.ok(questionService.getAllQuestions());

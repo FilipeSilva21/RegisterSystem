@@ -18,7 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @PostMapping
     public ResponseEntity<Long> createUser(@RequestBody CreateUserDTO createUserDTO){
 
@@ -35,9 +34,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-
-
-    @GetMapping("/users/search")
+    @GetMapping("/search")
     public ResponseEntity<List<User>> searchUser(@RequestParam String search){
 
         var users = userService.searchUser(search);
