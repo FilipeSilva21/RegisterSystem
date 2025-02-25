@@ -1,5 +1,0 @@
-UserId: 1
-Name: Filipe SIlva
-Email: Filipe@example.com
-Altura: 1.73
-Idade: 20
